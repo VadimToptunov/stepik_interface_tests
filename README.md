@@ -4,7 +4,5 @@
 
 Запуск производится следующим образом:
 
-`
-cd ./tests/
-pytest --language=es test_items.py
-`
+`cd ./tests/`
+`pytest --language=es test_items.py`
