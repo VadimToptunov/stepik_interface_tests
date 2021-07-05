@@ -1,31 +1,19 @@
 import pytest
 from selenium import webdriver
-
+from selenium.webdriver.chrome.options import Options
 
 def pytest_addoption(parser):
- 	parser.addoption('--language', action='store', default=None, 
- 		help="Choose locale to run test.")
-
+    parser.addoption('--language', action='store', default=None, help="Set a locale.")
 
 
 @pytest.fixture(scope="function")
-def language(lang):
-    locale = lang.config.getoption("language")
-    
-
-
-# @pytest.fixture(scope="function")
-# def browser(request):
-#     browser_name = request.config.getoption("browser_name")
-#     browser = None
-#     if browser_name == "chrome":
-#         print("\nstart chrome browser for test..")
-#         browser = webdriver.Chrome()
-#     elif browser_name == "firefox":
-#         print("\nstart firefox browser for test..")
-#         browser = webdriver.Firefox()
-#     else:
-#         raise pytest.UsageError("--browser_name should be chrome or firefox")
-#     yield browser
-#     print("\nquit browser..")
-#     browser.quit()
+def browser(request):
+    locale = request.config.getoption("language")
+    options = Options()
+    options.add_argument("--start-maximized")
+    options.add_experimental_option('prefs', {'intl.accept_languages': locale})
+    print("\nstart browser for test..")
+    browser = webdriver.Chrome(options=options)
+    yield browser
+    print("\nquit browser..")
+    browser.quit()
